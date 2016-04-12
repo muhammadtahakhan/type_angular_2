@@ -1,0 +1,23 @@
+<ion-navbar *navbar>
+  <ion-title>Login</ion-title>
+</ion-navbar>
+
+<ion-content padding class="page1">
+  
+  
+  <ion-list>
+
+  <ion-item>
+    <ion-label stacked>Username</ion-label>
+    <ion-input type="text" #name></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Password</ion-label>
+    <ion-input type="password" #password></ion-input>
+  </ion-item>
+
+</ion-list>
+  <button (click)='makeGetRequest()' light>login</button>
+  <button (click)='authenticate(name.value, password.value)' light>Post</button>
+</ion-content>
