@@ -3,7 +3,13 @@ var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./../config'); // get our config file
 var User   = require('./../models/user'); // get our mongoose model
 var config = require('./../config');
+var studentRoutes = require('./students');
 var apiRoutes = express.Router();     
+ 
+
+// apiRoutes.get('/students', function(req, res) {
+//   res.json({ message: 'Welcome to the student route!' });
+// });
 
 apiRoutes.use(function(req, res, next) {
 
@@ -36,8 +42,8 @@ apiRoutes.use(function(req, res, next) {
   }
 });
 
+apiRoutes.use('/students', studentRoutes);
 
-// route to show a random message (GET http://localhost:8080/api/)
 apiRoutes.get('/', function(req, res) {
   res.json({ message: 'Welcome to the coolest API on earth!' });
 });

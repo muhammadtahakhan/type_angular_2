@@ -6,7 +6,7 @@ var apiRoutes = require('./routes/api');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config'); // get our config file
 var User   = require('./models/user'); // get our mongoose model
-    
+var cors = require('cors');
 
 var port = process.env.PORT || 8080;
 //MongoDB 
@@ -23,6 +23,7 @@ mongoose.connect('mongodb://localhost:27017/rest_test', function(err) {
 
 //Express
 var app = express();
+app.use(cors());
 // parse application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: false }))
  
@@ -30,8 +31,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     res.setHeader('Access-Control-Allow-Origin', '*');
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, CONNECT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, x-access-token, X-HTTP-Method-Override, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+res.setHeader('Access-Control-Max-Age', '86400');
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "x-access-token", "Origin, X-Requested-With, Content-Type, Accept");
+  var tok = req.body.token || req.query.token || req.headers['x-access-token'];
+  
   next();
 });
 
@@ -42,23 +51,28 @@ app.get('/', function(req, res) {
 //return user jsonwebaccesstoken
 app.post('/authenticate', function(req, res) {
     // console.log(req);
-    console.log(req.body.name);
+    // console.log(req.body.password);
   User.findOne({
       name: req.body.name
     }, function(err, user) {
         if (err) throw err;
   
         if (!user) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found..'});
-        } else if (user) {
+          return res.json({success: false, msg: 'Authentication failed. User not found..'});
+        } 
+         if (user) {
       if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        console.log("db"+user.password);
+        console.log("user"+req.body.password);
+    //    return res.json({ success: false, message: 'Authentication failed. Wrong password.'});
+    return res.json({success: false, msg: 'Authentication failed. password not found..'});
       } else {
             var token = jwt.sign(user, config.secret, {
           expiresInMinutes: 1440 // expires in 24 hours
-        });
+                });
 
         // return the information including token as JSON
+       
         res.json({
           success: true,
           message: 'Enjoy your token!',
