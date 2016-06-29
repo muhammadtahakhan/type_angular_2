@@ -7,8 +7,9 @@
     "@angular/platform-browser": "^2.0.0-rc.1",
     "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
     "@angular/router": "^2.0.0-rc.1",
+    "angular2-google-maps": "^0.12.0",
     "es6-shim": "^0.35.0",
-    "ionic-angular": "2.0.0-beta.7",
+    "ionic-angular": "2.0.0-beta.8",
     "ionic-native": "1.2.4",
     "ionicons": "3.0.0",
     "reflect-metadata": "^0.1.3",
@@ -26,8 +27,8 @@
     "ionic-gulp-scripts-copy": "^2.0.0",
     "run-sequence": "1.1.5"
   },
-  "name": "shop",
-  "description": "shop: An Ionic project",
+  "name": "myapp",
+  "description": "myApp: An Ionic project",
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",
